@@ -1,0 +1,179 @@
+/* Unity 6 Responsive WebGL Template
+   Full-viewport layout with a compact website-style toolbar. */
+:root {
+  color-scheme: dark;
+  --page-bg: #0b1020;
+  --panel-bg: rgba(18, 25, 43, 0.92);
+  --panel-border: rgba(255, 255, 255, 0.10);
+  --text: #f5f7ff;
+  --muted: #9ba7bd;
+  --accent: #7c9cff;
+  --safe-top: env(safe-area-inset-top, 0px);
+  --safe-right: env(safe-area-inset-right, 0px);
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+  --safe-left: env(safe-area-inset-left, 0px);
+}
+* { box-sizing: border-box; }
+html, body {
+  width: 100%;
+  height: 100%;
+  min-height: 100%;
+  margin: 0;
+  overflow: hidden;
+  background: var(--page-bg);
+  color: var(--text);
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+body { overscroll-behavior: none; }
+#app {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  height: 100dvh;
+  padding: var(--safe-top) var(--safe-right) var(--safe-bottom) var(--safe-left);
+  background:
+    radial-gradient(ellipse at 50% 0%, rgba(74, 100, 170, .18), transparent 55%),
+    var(--page-bg);
+}
+#game-shell {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+  background: #000;
+  isolation: isolate;
+}
+#unity-canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+  outline: none;
+  background: #000;
+  touch-action: none;
+  -webkit-tap-highlight-color: transparent;
+}
+#toolbar {
+  position: absolute;
+  z-index: 5;
+  top: max(12px, env(safe-area-inset-top));
+  left: max(12px, env(safe-area-inset-left));
+  right: max(12px, env(safe-area-inset-right));
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  pointer-events: none;
+  transition: opacity .25s ease, transform .25s ease;
+}
+#game-title, #fullscreen-button {
+  pointer-events: auto;
+  border: 1px solid var(--panel-border);
+  background: var(--panel-bg);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  box-shadow: 0 8px 28px rgba(0,0,0,.18);
+}
+#game-title {
+  min-width: 0;
+  max-width: min(65vw, 420px);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  padding: 10px 14px;
+  border-radius: 12px;
+  font-size: 13px;
+  font-weight: 650;
+  letter-spacing: .02em;
+}
+#fullscreen-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 42px;
+  padding: 0 13px;
+  border-radius: 12px;
+  color: var(--text);
+  font: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  touch-action: manipulation;
+}
+#fullscreen-button:hover { background: rgba(37, 49, 77, .96); }
+#fullscreen-button:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+#fullscreen-button svg { width: 18px; height: 18px; }
+#loading-screen {
+  position: absolute;
+  z-index: 10;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  background:
+    radial-gradient(ellipse at 50% 35%, rgba(51, 73, 130, .32), transparent 55%),
+    #0b1020;
+  opacity: 1;
+  visibility: visible;
+  transition: opacity .35s ease, visibility .35s ease;
+}
+#loading-screen.is-hidden {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+.loading-card {
+  width: min( min(440px, 100%), 100%);
+  padding: clamp(22px, 5vw, 34px);
+  border: 1px solid var(--panel-border);
+  border-radius: 20px;
+  background: rgba(18, 25, 43, .76);
+  box-shadow: 0 24px 80px rgba(0,0,0,.28);
+}
+.brand-row { display: flex; align-items: center; gap: 12px; margin-bottom: 26px; }
+.brand-mark {
+  width: 12px; height: 12px; border-radius: 4px;
+  background: linear-gradient(135deg, #9ab2ff, #637dff);
+  box-shadow: 0 0 22px rgba(124,156,255,.65);
+  transform: rotate(45deg);
+}
+#loading-title { font-size: 16px; font-weight: 700; letter-spacing: .01em; }
+.loading-track {
+  width: 100%; height: 7px; overflow: hidden;
+  border-radius: 99px; background: rgba(255,255,255,.10);
+}
+#progress-fill {
+  width: 0%; height: 100%; border-radius: inherit;
+  background: linear-gradient(90deg, #6e8cff, #a6b8ff);
+  transition: width .16s ease;
+}
+.loading-meta {
+  display: flex; justify-content: space-between; gap: 12px;
+  margin-top: 12px; color: var(--muted); font-size: 12px;
+}
+#progress-value { color: var(--text); font-variant-numeric: tabular-nums; }
+#error-message {
+  position: absolute; z-index: 20; left: 16px; right: 16px; bottom: 16px;
+  padding: 14px 16px; border: 1px solid rgba(255,120,120,.35);
+  border-radius: 12px; background: rgba(70,20,25,.94);
+  color: #fff; font-size: 13px; line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+#game-shell:fullscreen { width: 100%; height: 100%; background: #000; }
+#game-shell:-webkit-full-screen { width: 100%; height: 100%; background: #000; }
+@media (max-width: 640px) {
+  #toolbar { top: max(8px, env(safe-area-inset-top)); left: max(8px, env(safe-area-inset-left)); right: max(8px, env(safe-area-inset-right)); }
+  #game-title { padding: 9px 11px; font-size: 12px; max-width: 58vw; }
+  #fullscreen-button { min-height: 40px; padding: 0 11px; font-size: 12px; }
+  #fullscreen-button svg { width: 17px; height: 17px; }
+  .loading-card { border-radius: 16px; }
+}
+@media (max-height: 420px) and (orientation: landscape) {
+  #toolbar { top: 6px; }
+  #game-title { padding: 7px 10px; }
+  #fullscreen-button { min-height: 36px; }
+}

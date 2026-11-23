@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1045 &1
+EditorBuildSettings:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Scenes:
+  - enabled: 0
+    path: Assets/Website/Scenes/TILTClub_HomeSite.unity
+    guid: 2cda990e2423bbf4892e6590ba056729
+  - enabled: 1
+    path: Assets/Games/Poker/Scene/Poker.unity
+    guid: 35888cf7b3906934392fbc0bc78bd6e8
+  - enabled: 0
+    path: Assets/Scenes/Test.unity
+    guid: c15c7b15627b5684ab71f4ff69742f50
+  m_configObjects:
+    com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 3590b91b4603b465dbb4216d601bff33, type: 3}
